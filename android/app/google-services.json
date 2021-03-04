@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "845663424901",
+    "project_id": "food-preservation-d6f3e",
+    "storage_bucket": "food-preservation-d6f3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845663424901:android:9d9ad4385a1f3de7c034ec",
+        "android_client_info": {
+          "package_name": "com.example.food_preservation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "845663424901-hurb6v1d3piqr37oait6h65o786s9hc1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRFDmFBpvTYLr3kPfl8YWlRISDa48MyA8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "845663424901-hurb6v1d3piqr37oait6h65o786s9hc1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

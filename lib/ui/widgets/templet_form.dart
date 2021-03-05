@@ -7,14 +7,14 @@ class TempletForm extends StatelessWidget {
   const TempletForm({
     Key key,
     @required this.title,
-    this.form,
+    this.children,
     this.iconForm,
     this.scrollController,
     this.formCenter = true,
   }) : super(key: key);
 
   final title;
-  final List<Widget> form;
+  final List<Widget> children;
   final String iconForm;
   final ScrollController scrollController;
   final bool formCenter;
@@ -46,8 +46,8 @@ class TempletForm extends StatelessWidget {
                         // physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                         padding: const EdgeInsets.symmetric(horizontal: 40.0),
                         children: formCenter 
-                            ? [_buildTitleWithIConWidget, ...this.form]
-                            : this.form,
+                            ? [_buildTitleWithIConWidget, ...this.children]
+                            : this.children,
                       ),
                     ),
                   ),

@@ -10,7 +10,7 @@ import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class SignUpController extends GetxController {
+class AddTeacherController extends GetxController {
   final _form = fb.group({
     'name': FormControl(
       validators: [
@@ -47,6 +47,7 @@ class SignUpController extends GetxController {
     ),
     'note': FormControl(
       validators: [
+        Validators.required,
       ],
     ),
     'phone': FormControl(
@@ -56,12 +57,6 @@ class SignUpController extends GetxController {
       ],
     ),
     'type': FormControl<int>(
-      validators: [
-        Validators.required,
-        Validators.number,
-      ],
-    ),
-    'level': FormControl<int>(
       validators: [
         Validators.required,
         Validators.number,
@@ -81,7 +76,7 @@ class SignUpController extends GetxController {
     update();
   }
 
-  Future signUp() async {
+  Future add() async {
     print('signUp');
     if (_form.valid) {
       //

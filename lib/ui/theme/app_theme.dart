@@ -9,14 +9,14 @@ class AppTheme {
     accentColor: AppColors.lightAccent,
     scaffoldBackgroundColor: AppColors.lightAccent,
     appBarTheme: AppBarTheme(
-      iconTheme: IconThemeData(color: AppColors.lightAccent),
-      actionsIconTheme: IconThemeData(color: AppColors.lightAccent),
+      iconTheme: IconThemeData(color: AppColors.lightTextAppBar),
+      actionsIconTheme: IconThemeData(color: AppColors.lightTextAppBar),
       elevation: 0,
       textTheme: TextTheme(
         // ignore: deprecated_member_use
         title: TextStyle(
           fontFamily: "DinNextLtW23",
-          color: AppColors.lightAccent,
+          color: AppColors.lightTextAppBar,
           fontSize: 20,
           fontWeight: FontWeight.w800,
         ),

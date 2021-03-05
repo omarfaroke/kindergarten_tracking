@@ -1,1 +1,1 @@
-enum UserType { Admin, Restaurant, Volunteers }
+enum UserType { Admin, Teacher, Parent }

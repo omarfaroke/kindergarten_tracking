@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_preservation/services/authentication_service.dart';
+import 'package:food_preservation/ui/pages/add_teacher/add_teacher_page.dart';
 import 'package:food_preservation/ui/theme/app_colors.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
@@ -16,27 +17,26 @@ class AppDrawer extends StatelessWidget {
         textDirection: TextDirection.rtl,
         child: ListView(
           children: <Widget>[
-
             UserAccountsDrawerHeader(
               currentAccountPicture: GFAvatar(
-                      backgroundColor: AppColors.lightAccent,
-                      backgroundImage: user?.photoURL == null
-                          ? NetworkImage(
-                              user.photoURL,
-                            )
-                          : AssetImage(
-                              "assets/images/icon.png",
-                            ),
+                backgroundColor: AppColors.lightAccent,
+                backgroundImage: user?.photoURL != null
+                    ? NetworkImage(
+                        user.photoURL,
+                      )
+                    : AssetImage(
+                        "assets/images/icon.png",
+                      ),
 
-                      radius: 2,
+                radius: 2,
 
-                      // ,child: user?.photoURL == null
-                      //     ? Image.asset(
-                      //         "assets/images/icon.png",
-                      //         fit: BoxFit.cover,
-                      //       )
-                      //     : SizedBox(),
-                    ),
+                // ,child: user?.photoURL == null
+                //     ? Image.asset(
+                //         "assets/images/icon.png",
+                //         fit: BoxFit.cover,
+                //       )
+                //     : SizedBox(),
+              ),
               accountName: Text(
                 user?.displayName ?? '',
                 style: TextStyle(
@@ -66,6 +66,20 @@ class AppDrawer extends StatelessWidget {
               onTap: () => print('home'),
             ),
             Divider(),
+            // ListTile(
+            //   leading: Icon(
+            //     Icons.logout,
+            //     color: AppColors.lightPrimary,
+            //   ),
+            //   title: Text(
+            //     'إضافة معلم',
+            //     style: TextStyle(
+            //       color: AppColors.lightPrimary,
+            //     ),
+            //   ),
+            //   onTap: () => Get.to(AddTeacherPage()),
+            // ),
+            // Divider(),
             ListTile(
               leading: Icon(
                 Icons.logout,

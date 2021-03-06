@@ -51,7 +51,7 @@ class LoginController extends GetxController {
           message: "تأكد من البريد الالكتروني وكلمة المرور !",
         );
 
-        showTextError("خطأ في تسجيل الدخول");
+      //  showTextError("خطأ في تسجيل الدخول");
 
         isBusy = false;
 

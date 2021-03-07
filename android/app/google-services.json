@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "246574281486",
-    "project_id": "kindergarten-tracking",
-    "storage_bucket": "kindergarten-tracking.appspot.com"
+    "project_number": "124707803523",
+    "project_id": "kindergarten-tracking-f363a",
+    "storage_bucket": "kindergarten-tracking-f363a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:246574281486:android:87fbef57b76242bbfb1d5f",
+        "mobilesdk_app_id": "1:124707803523:android:ae2aee11431741bd93a6b6",
         "android_client_info": {
           "package_name": "com.example.kindergarten_tracking"
         }
       },
       "oauth_client": [
         {
-          "client_id": "246574281486-vid5109esklgbjlfct34o2td90q9g5kk.apps.googleusercontent.com",
+          "client_id": "124707803523-igd3u6a8an16l0cikcvg6up7lusucmmg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB2Vp0Kiac8RkTsY02F2cwDnoBqGaAdbOg"
+          "current_key": "AIzaSyArW0BKQW6lqwiDImNt580j4Qdag23y2FM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "246574281486-vid5109esklgbjlfct34o2td90q9g5kk.apps.googleusercontent.com",
+              "client_id": "124707803523-igd3u6a8an16l0cikcvg6up7lusucmmg.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

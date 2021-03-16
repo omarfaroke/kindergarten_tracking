@@ -59,3 +59,33 @@ showSnackBar({String title, String message}) {
     snackPosition: SnackPosition.BOTTOM,
   );
 }
+
+Future<bool> defaultDialog(
+    {String confirmButtonLable = 'نعم',
+    String cancelButtonLable = 'إلغاء',
+    String title,
+    String middleText,
+    bool barrierDismissible = false}) async {
+  return await Get.defaultDialog(
+    barrierDismissible: barrierDismissible ,
+      title: title ?? '',
+      middleText: middleText ?? '',
+      
+      actions: [
+        FlatButton(
+          onPressed: () => Get.back(result: false),
+          child: Text(
+            cancelButtonLable,
+            style: TextStyle(color: AppColors.lightPrimary),
+          ),
+        ),
+        FlatButton(
+          onPressed: () => Get.back(result: true),
+          child: Text(
+            confirmButtonLable,
+            style: TextStyle(color: Colors.white),
+          ),
+          color: AppColors.lightPrimary,
+        ),
+      ]);
+}

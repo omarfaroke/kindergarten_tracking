@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:food_preservation/models/app_setting.dart';
 import 'package:food_preservation/models/user_model.dart';
 import 'package:food_preservation/services/authentication_service.dart';
+import 'package:food_preservation/util/enums.dart';
 import 'package:get/get.dart';
 import 'db/db_box_model.dart';
 import 'db/hive_db_helper.dart';
@@ -39,13 +40,25 @@ class AppService {
 
   bool get isUserRegistered => _appSetting.currentUser != null;
 
-  refreshUserInfo(UserModel user) {
+  refreshUserInfo(UserModel user) async {
     _appSetting.currentUser = user;
 
-    refreshDb;
+    await refreshDb;
   }
 
-  get refreshDb async => await dbBox.setData(model: _appSetting);
+  Future get refreshDb async => await dbBox.setData(model: _appSetting);
+
+  UserModel get currentUser => _appSetting.currentUser;
+
+  UserType get userType => (currentUser?.type) == null
+      ? UserType.Unknown
+      : UserType.values[currentUser.type];
+
+  bool get userIsAdmin => currentUser?.type == UserType.Admin.index;
+
+  bool get userIsTeacher => currentUser?.type == UserType.Teacher.index;
+
+  bool get userIsParent => currentUser?.type == UserType.Parent.index;
 
   Future exitFromApp() async {
     await Future.delayed(Duration(milliseconds: 200));

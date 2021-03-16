@@ -16,7 +16,7 @@ class LoginController extends GetxController {
       'password': FormControl(
         validators: [
           Validators.required,
-            Validators.minLength(6),
+          Validators.minLength(6),
         ],
       ),
     });
@@ -52,7 +52,7 @@ class LoginController extends GetxController {
           message: "تأكد من البريد الالكتروني وكلمة المرور !",
         );
 
-      //  showTextError("خطأ في تسجيل الدخول");
+        //  showTextError("خطأ في تسجيل الدخول");
 
         isBusy = false;
 

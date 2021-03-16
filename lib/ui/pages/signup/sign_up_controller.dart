@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:food_preservation/models/user_model.dart';
 import 'package:food_preservation/services/authentication_service.dart';
+import 'package:food_preservation/services/db/teacher_firestore_service.dart';
 import 'package:food_preservation/ui/widgets/toast_msg.dart';
 import 'package:food_preservation/util/function_helpers.dart';
 import 'package:get/get.dart';
@@ -46,8 +47,7 @@ class SignUpController extends GetxController {
       validators: [],
     ),
     'note': FormControl(
-      validators: [
-      ],
+      validators: [],
     ),
     'phone': FormControl(
       validators: [
@@ -61,7 +61,7 @@ class SignUpController extends GetxController {
         Validators.number,
       ],
     ),
-    'level': FormControl<int>(
+    'level': FormControl<String>(
       validators: [
         Validators.required,
         Validators.number,
@@ -96,11 +96,14 @@ class SignUpController extends GetxController {
         File imageFile =
             mapFrom['photo'] != null ? File(mapFrom['photo']) : null;
 
-        await Get.find<AuthenticationService>().signUpWithEmail(
+        String id = await Get.find<AuthenticationService>().signUpWithEmail(
             email: user.email,
             password: password,
             user: user,
             imageFile: imageFile);
+
+        await Get.find<TeacherFirestoreService>()
+            .createTeacher(id: id, level: mapFrom['level']);
       } catch (e) {
         if (e is EmailAlreadyInUseException) {
           showSnackBar(

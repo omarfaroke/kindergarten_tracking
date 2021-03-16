@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:food_preservation/constants/constants.dart';
 import 'package:food_preservation/ui/animation/fade_animation.dart';
 import 'package:food_preservation/ui/theme/app_colors.dart';
 import 'package:food_preservation/ui/widgets/pick_Image_and_crop.dart';
@@ -20,91 +21,95 @@ class AddTeacherPage extends StatelessWidget {
     return GetBuilder<AddTeacherController>(
       init: AddTeacherController(),
       builder: (controller) => SafeArea(
-          child: Scaffold(
-        body: Directionality(
-            textDirection: TextDirection.rtl,
-            child: Scaffold(
-              body: ReactiveFormBuilder(
-                form: () => controller.form,
-                builder: (context, form, child) {
-                  return FadeAnimation(
-                    1.6,
-                    TempletForm(
-                      title: 'إضافة معلم',
-                      formCenter: false,
-                      children: [
-                        _sizeBetween,
-                        _buildImageUser(),
-                        _sizeBetween,
-                        CustomTextField(
-                          formControlName: 'name',
-                          hintText: 'اسم المعلم',
-                          prefixIcon: Icons.perm_identity,
-                          validationMessages: (control) =>
-                              {...validatorRequiredMs},
-                          onSubmitted: () => form.focus('email'),
-                        ),
-                        _sizeBetween,
-                        CustomTextField(
-                          formControlName: 'email',
-                          hintText: 'البريد الالكتروني',
-                          prefixIcon: Icons.email,
-                          validationMessages: (control) => {
-                            ...validatorRequiredMs,
-                            ValidationMessage.email:
-                                'صيغة البريد الاكتروني غير صحيحة'
-                          },
-                        ),
-                        _sizeBetween,
-                        CustomTextField(
-                          formControlName: 'phone',
-                          hintText: ' رقم التلفون',
-                          prefixIcon: Icons.phone_android,
-                          isNumber: true,
-                          validationMessages: (control) => {
-                            ...validatorRequiredMs,
-                          },
-                        ),
-                        _sizeBetween,
-                        CustomTextField(
-                          formControlName: 'note',
-                          hintText: ' ملاحظات',
-                          prefixIcon: Icons.note,
-                          validationMessages: (control) => {
-                            ...validatorRequiredMs,
-                          },
-                          minLines: 2,
-                          maxLines: 4,
-                        ),
-                        _sizeBetween,
-                        CustomTextField(
-                          formControlName: 'address',
-                          hintText: ' العنوان',
-                          prefixIcon: Icons.location_city_sharp,
-                          validationMessages: (control) => {
-                            ...validatorRequiredMs,
-                          },
-                          minLines: 2,
-                          maxLines: 4,
-                        ),
-                        _sizeBetween,
-                        
-                        _sizeBetween,
-                        controller.isBusy
-                            ? Loading()
-                            : CustomSubmitButton(
-                                label: "إضافة",
-                                onPressed: () => controller.add(),
-                              ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                      ],
+          child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('إضافة معلم'),
+            centerTitle: true,
+          ),
+          body: ReactiveFormBuilder(
+            form: () => controller.form,
+            builder: (context, form, child) {
+              return FadeAnimation(
+                1.6,
+                TempletForm(
+                  formCenter: false,
+                  children: [
+                    _sizeBetween,
+                    _buildImageUser(),
+                    _sizeBetween,
+                    ListDropdown(
+                      formControlName: 'level',
+                      lable: 'المستوى الدراسي',
+                      values: levels,
                     ),
-                  );
-                },
-              ),
-            )),
+                    _sizeBetween,
+                    CustomTextField(
+                      formControlName: 'name',
+                      hintText: 'اسم المعلم',
+                      prefixIcon: Icons.perm_identity,
+                      validationMessages: (control) => {...validatorRequiredMs},
+                      onSubmitted: () => form.focus('email'),
+                    ),
+                    _sizeBetween,
+                    CustomTextField(
+                      formControlName: 'email',
+                      hintText: 'البريد الالكتروني',
+                      prefixIcon: Icons.email,
+                      validationMessages: (control) => {
+                        ...validatorRequiredMs,
+                        ValidationMessage.email:
+                            'صيغة البريد الاكتروني غير صحيحة'
+                      },
+                    ),
+                    _sizeBetween,
+                    CustomTextField(
+                      formControlName: 'phone',
+                      hintText: ' رقم التلفون',
+                      prefixIcon: Icons.phone_android,
+                      isNumber: true,
+                      validationMessages: (control) => {
+                        ...validatorRequiredMs,
+                      },
+                    ),
+                    _sizeBetween,
+                    CustomTextField(
+                      formControlName: 'address',
+                      hintText: ' العنوان',
+                      prefixIcon: Icons.location_city_sharp,
+                      validationMessages: (control) => {
+                        ...validatorRequiredMs,
+                      },
+                      minLines: 2,
+                      maxLines: 4,
+                    ),
+                    _sizeBetween,
+                    Center(
+                      child: Text(
+                        'كلمة المرور الافتراضية : ${controller.defaultPassword}',
+                        style: TextStyle(
+                          fontFamily: 'DinNextLtW23',
+                        ),
+                      ),
+                    ),
+                    _sizeBetween,
+                    _sizeBetween,
+                    controller.isBusy
+                        ? Loading()
+                        : CustomSubmitButton(
+                            label: "إضافة",
+                            onPressed: () => controller.add(),
+                          ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
       )),
     );
   }

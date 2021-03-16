@@ -1,10 +1,14 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:food_preservation/app/locator.dart';
 import 'package:food_preservation/models/user_model.dart';
 import 'package:food_preservation/services/db/user_firestore_service.dart';
 import 'package:food_preservation/services/storge_services.dart';
 import 'package:get/get.dart';
+
+import 'app_service.dart';
 
 class AuthenticationService extends GetxService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -28,6 +32,20 @@ class AuthenticationService extends GetxService {
         email: email,
         password: password,
       );
+
+      UserModel user = await Get.find<UserFirestoreService>()
+          .getUser(userCredential.user.uid);
+
+      // if not found from firestore
+      if (user == null) {
+        await userCredential.user.delete();
+        throw Exception('');
+      }
+
+      await locator<AppService>().refreshUserInfo(user);
+
+      userCredential.user.reload();
+
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -44,27 +62,49 @@ class AuthenticationService extends GetxService {
       {@required String email,
       @required String password,
       UserModel user,
-      File imageFile}) async {
+      File imageFile,
+      bool newUserFromAdmin = false}) async {
+    //
+    FirebaseApp appSecondary;
+    FirebaseAuth auth;
+
+    if (newUserFromAdmin) {
+      appSecondary = await Firebase.initializeApp(
+          name: 'Secondary', options: Firebase.app().options);
+      auth = FirebaseAuth.instanceFor(app: appSecondary);
+    } else {
+      auth = _firebaseAuth;
+    }
+
     try {
-      UserCredential userCredential =
-          await _firebaseAuth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      _firebaseAuth.currentUser.updateProfile(displayName: user.name);
+      auth.currentUser.updateProfile(displayName: user.name);
 
       user.id = userCredential.user.uid;
 
       if (imageFile != null) {
         user.photo = await StorageService.uploadImage(
             'usersImages/${user.id}', imageFile);
-        _firebaseAuth.currentUser.updateProfile(photoURL: user.photo);
+        auth.currentUser.updateProfile(photoURL: user.photo);
       }
 
-      await Get.find<UserFirestoreService>().createUser(user);
+      bool ok = await Get.find<UserFirestoreService>().createUser(user);
+      if (!ok) {
+        await userCredential.user.delete();
+        throw Exception('');
+      }
 
-      return userCredential.user;
+      if (!newUserFromAdmin) {
+        await locator<AppService>().refreshUserInfo(user);
+      } else {
+        await appSecondary.delete();
+      }
+
+      return userCredential.user?.uid;
     } on FirebaseAuthException catch (e) {
       print(e.code);
       if (e.code == 'weak-password') {
@@ -85,7 +125,8 @@ class AuthenticationService extends GetxService {
   // sign out
   Future<void> signOut() async {
     try {
-      return await _firebaseAuth.signOut();
+      await _firebaseAuth.signOut();
+      locator<AppService>().refreshUserInfo(null);
     } catch (error) {
       print(error.toString());
       return;

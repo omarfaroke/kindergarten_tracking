@@ -6,7 +6,7 @@ import 'disable_widget.dart';
 class TempletForm extends StatelessWidget {
   const TempletForm({
     Key key,
-    @required this.title,
+    this.title,
     this.children,
     this.iconForm,
     this.scrollController,
@@ -33,7 +33,9 @@ class TempletForm extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              !formCenter ? _buildTitleWithIConWidget : SizedBox(),
+              (!formCenter && title != null)
+                  ? _buildTitleWithIConWidget
+                  : SizedBox(),
               Expanded(
                 child: Center(
                   child: Padding(
@@ -45,7 +47,7 @@ class TempletForm extends StatelessWidget {
                         physics: ClampingScrollPhysics(),
                         // physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                         padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                        children: formCenter 
+                        children: formCenter
                             ? [_buildTitleWithIConWidget, ...this.children]
                             : this.children,
                       ),
@@ -89,7 +91,9 @@ class TempletForm extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 30,)
+        SizedBox(
+          height: 30,
+        )
       ],
     );
   }

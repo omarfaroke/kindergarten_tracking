@@ -50,8 +50,10 @@ dependencies:
   flutter_hooks: 0.15.0
 
   bot_toast: 3.0.5
+  cached_network_image: 2.5.1
 
   get:
+  rxdart: 0.25.0
 
   # location
   google_maps_flutter: 1.2.0

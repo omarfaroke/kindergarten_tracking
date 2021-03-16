@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:food_preservation/models/user_model.dart';
 import 'package:food_preservation/services/authentication_service.dart';
+import 'package:food_preservation/services/db/teacher_firestore_service.dart';
 import 'package:food_preservation/ui/widgets/toast_msg.dart';
+import 'package:food_preservation/util/enums.dart';
 import 'package:food_preservation/util/function_helpers.dart';
 import 'package:get/get.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
@@ -23,17 +25,6 @@ class AddTeacherController extends GetxController {
         Validators.email,
       ],
     ),
-    'password': FormControl(
-      validators: [
-        Validators.required,
-        Validators.minLength(6),
-      ],
-    ),
-    'confirmPassword': FormControl(
-      validators: [
-        Validators.required,
-      ],
-    ),
     'photo': FormControl(
       validators: [],
     ),
@@ -46,9 +37,7 @@ class AddTeacherController extends GetxController {
       validators: [],
     ),
     'note': FormControl(
-      validators: [
-        Validators.required,
-      ],
+      validators: [],
     ),
     'phone': FormControl(
       validators: [
@@ -56,15 +45,13 @@ class AddTeacherController extends GetxController {
         Validators.number,
       ],
     ),
-    'type': FormControl<int>(
+    'level': FormControl<String>(
       validators: [
         Validators.required,
         Validators.number,
       ],
     ),
-  }, [
-    Validators.mustMatch('password', 'confirmPassword'),
-  ]);
+  }, []);
 
   FormGroup get form => _form;
 
@@ -76,8 +63,10 @@ class AddTeacherController extends GetxController {
     update();
   }
 
+  String defaultPassword = '123456';
+
   Future add() async {
-    print('signUp');
+    print('add');
     if (_form.valid) {
       //
       try {
@@ -86,16 +75,23 @@ class AddTeacherController extends GetxController {
         Map mapFrom = _form.value;
 
         UserModel user = UserModel.fromMap(mapFrom);
-        String password = mapFrom['password'];
+        String password = defaultPassword;
 
         File imageFile =
             mapFrom['photo'] != null ? File(mapFrom['photo']) : null;
 
-        await Get.find<AuthenticationService>().signUpWithEmail(
-            email: user.email,
-            password: password,
-            user: user,
-            imageFile: imageFile);
+        user.type = UserType.Teacher.index;
+
+        String id = await Get.find<AuthenticationService>().signUpWithEmail(
+          email: user.email,
+          password: password,
+          user: user,
+          imageFile: imageFile,
+          newUserFromAdmin: true,
+        );
+
+        await Get.find<TeacherFirestoreService>()
+            .createTeacher(id: id, level: mapFrom['level']);
       } catch (e) {
         if (e is EmailAlreadyInUseException) {
           showSnackBar(
@@ -112,10 +108,10 @@ class AddTeacherController extends GetxController {
         return;
       }
 
-      showTextSuccess('تم تسجيل البيانات بنجاح');
+      showTextSuccess('تم إضافة البيانات بنجاح');
 
       isBusy = false;
-      afterSuccessSignUp;
+      afterSuccessAdd;
     } else {
       _form.markAllAsTouched();
 
@@ -125,34 +121,7 @@ class AddTeacherController extends GetxController {
     return true;
   }
 
-  get afterSuccessSignUp {
+  get afterSuccessAdd {
     Get.back();
-  }
-
-  Future<LocationResult> showMapView(BuildContext context) async {
-    String apiKey = 'AIzaSyCYH1e8Jk3brXKinzKU7OCb5DmONdwBJMs';
-
-    LatLng latLng = LatLng(24.706218959658127, 46.669893711805344); // الرياض
-
-    LocationResult result = await showLocationPicker(context, apiKey,
-        requiredGPS: false,
-        resultCardConfirmIcon: Center(child: Text('تحديد')),
-        initialCenter: latLng,
-        automaticallyAnimateToCurrentLocation: false,
-        myLocationButtonEnabled: true,
-        layersButtonEnabled: true,
-        resultCardAlignment: Alignment.bottomCenter,
-        countries: ['YE', 'SA'],
-        language: 'AR');
-
-    print(result);
-
-    if (result != null) {
-      form.control('location').value = latLngToString(result.latLng);
-    } else {
-      form.control('location').value = null;
-    }
-
-    return result;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food_preservation/constants/constants.dart';
 import 'package:food_preservation/models/user_model.dart';
 import 'package:get/get.dart';
 
@@ -8,7 +9,9 @@ class UserFirestoreService extends GetxService {
 
   Future<bool> createUser(UserModel user) async {
     try {
-      await _usersCollectionReference.doc(user.id).set(user.toMap());
+      await _usersCollectionReference
+          .doc(user.id)
+          .set(user.toMap()..addAll(updatedAtField));
       return true;
     } catch (e) {
       print(e);
@@ -18,7 +21,21 @@ class UserFirestoreService extends GetxService {
 
   Future<bool> updateUserInfo(UserModel user) async {
     try {
-      await _usersCollectionReference.doc(user.id).set(user.toMap());
+      await _usersCollectionReference
+          .doc(user.id)
+          .set(user.toMap()..addAll(updatedAtField));
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> updateUserStatus(String id, String status) async {
+    try {
+      await _usersCollectionReference
+          .doc(id)
+          .update({'status': status}..addAll(updatedAtField));
       return true;
     } catch (e) {
       print(e);
@@ -41,10 +58,22 @@ class UserFirestoreService extends GetxService {
     }
   }
 
-  Stream<List<UserModel>> usersStream() {
+  Future<bool> deleteUser(String uid) async {
+    try {
+      await _usersCollectionReference.doc(uid).delete();
+
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Stream<List<UserModel>> usersStream({int userType}) {
     return _usersCollectionReference
-        .orderBy('dateCreated', descending: true)
-        .snapshots()
+        // .where('type', isEqualTo: userType) // notWorking ! TODO:
+        .orderBy(updatedAtKey, descending: true)
+        .snapshots(includeMetadataChanges: true)
         .map((QuerySnapshot query) {
       List<UserModel> retVal = List();
       query.docs.forEach((element) {
@@ -54,5 +83,24 @@ class UserFirestoreService extends GetxService {
       });
       return retVal;
     });
+  }
+
+  Future<List<UserModel>> usersFuture({int userType}) async {
+    try {
+      QuerySnapshot listData = await _usersCollectionReference
+          .where('type', isEqualTo: userType)
+          .orderBy(updatedAtKey, descending: true)
+          .get();
+      List<UserModel> retVal = List();
+      for (QueryDocumentSnapshot doc in listData.docs) {
+        Map mapData = doc.data();
+        mapData['id'] = doc.id;
+        retVal.add(UserModel.fromMap(mapData));
+      }
+      return retVal;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 }

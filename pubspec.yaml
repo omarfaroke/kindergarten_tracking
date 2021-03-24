@@ -54,6 +54,11 @@ dependencies:
 
   get:
   rxdart: 0.25.0
+  file_picker: 2.1.6
+  dio: 3.0.10
+  permission_handler: 5.1.0+2
+  open_file: 3.0.3
+  path_provider: 1.6.27
 
   # location
   google_maps_flutter: 1.2.0

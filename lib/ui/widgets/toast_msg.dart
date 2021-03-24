@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:food_preservation/services/helper_service.dart';
 import 'package:food_preservation/ui/theme/app_colors.dart';
+import 'package:food_preservation/util/function_helpers.dart';
 import 'package:get/get.dart';
+
+import 'download_alert.dart';
 
 showTextSuccess(String msg) {
   BotToast.showText(text: msg);
@@ -67,10 +73,9 @@ Future<bool> defaultDialog(
     String middleText,
     bool barrierDismissible = false}) async {
   return await Get.defaultDialog(
-    barrierDismissible: barrierDismissible ,
+      barrierDismissible: barrierDismissible,
       title: title ?? '',
       middleText: middleText ?? '',
-      
       actions: [
         FlatButton(
           onPressed: () => Get.back(result: false),
@@ -88,4 +93,48 @@ Future<bool> defaultDialog(
           color: AppColors.lightPrimary,
         ),
       ]);
+}
+
+Future<String> dialogDownload({String url, String path}) async {
+  bool ok = await HelperService.checkPermissionStorage;
+
+  String _path = path;
+
+  if (_path == null) {
+    String nameFile = url.split('/').isEmpty
+        ? DateTime.now().toString()
+        : url.split('/').first;
+
+    _path = await pathApp;
+    _path += '/$nameFile';
+  }
+
+  if (!ok) {
+    return null;
+  }
+
+  print(_path);
+  File file = File(_path);
+
+  if (!await file.exists()) {
+    await file.create();
+  } else {
+    await file.delete();
+    await file.create();
+  }
+
+  StateDownload stateDownload = await showDialog(
+    barrierDismissible: false,
+    context: Get.context,
+    builder: (context) => DownloadAlert(
+      url: url,
+      path: _path,
+    ),
+  );
+
+  if (stateDownload != null && stateDownload.successDownload) {
+    return _path;
+  }
+
+  return null;
 }

@@ -41,14 +41,14 @@ class PathStorage {
 }
 
 class StorageService {
-  static Future<String> uploadImage(String pathImage, File imageFile) async {
+  static Future<String> uploadFile(String nameFile, File dataFile) async {
     String _uploadedFileURL;
 
     Reference storageReference =
-        FirebaseStorage.instance.ref().child(pathImage);
+        FirebaseStorage.instance.ref().child(nameFile);
 
     try {
-      await storageReference.putFile(imageFile);
+      await storageReference.putFile(dataFile);
     } on FirebaseException catch (e) {
       // e.g, e.code == 'canceled'
       print(e.code);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_preservation/app/locator.dart';
 import 'package:food_preservation/services/app_service.dart';
 import 'package:food_preservation/services/authentication_service.dart';
+import 'package:food_preservation/ui/pages/tables_management/tables_management_page.dart';
 import 'package:food_preservation/ui/pages/teachers_management/teachers_management_page.dart';
 import 'package:food_preservation/ui/widgets/drawer_app.dart';
 import 'package:food_preservation/ui/widgets/widgets.dart';
@@ -85,6 +86,10 @@ class HomePage extends StatelessWidget {
               CustomButton(
                 label: 'ادارة الطلاب',
                 onPressed: () {},
+              ),
+              CustomButton(
+                label: 'ادارة الجداول',
+                onPressed: () =>Get.to(TablesManagementPage()),
               ),
             ],
           ),

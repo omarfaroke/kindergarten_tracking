@@ -87,7 +87,7 @@ class AuthenticationService extends GetxService {
       user.id = userCredential.user.uid;
 
       if (imageFile != null) {
-        user.photo = await StorageService.uploadImage(
+        user.photo = await StorageService.uploadFile(
             'usersImages/${user.id}', imageFile);
         auth.currentUser.updateProfile(photoURL: user.photo);
       }

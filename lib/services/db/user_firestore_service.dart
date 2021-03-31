@@ -20,15 +20,10 @@ class UserFirestoreService extends GetxService {
   }
 
   Future<bool> updateUserInfo(UserModel user) async {
-    try {
-      await _usersCollectionReference
-          .doc(user.id)
-          .set(user.toMap()..addAll(updatedAtField));
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
+    await _usersCollectionReference
+        .doc(user.id)
+        .set(user.toMap()..addAll(updatedAtField));
+    return true;
   }
 
   Future<bool> updateUserStatus(String id, String status) async {

@@ -5,13 +5,19 @@ import 'data_model.dart';
 class Student extends DataModel {
   String id;
   String name;
+  String address;
+  String photo;
   String parentId;
   String level;
+  String status;
   Student({
     this.id,
     this.name,
+    this.address,
+    this.photo,
     this.parentId,
     this.level,
+    this.status,
   });
 
   @override
@@ -28,8 +34,11 @@ class Student extends DataModel {
     return {
       'id': id,
       'name': name,
+      'address': address,
+      'photo': photo,
       'parentId': parentId,
       'level': level,
+      'status': status,
     };
   }
 
@@ -37,8 +46,11 @@ class Student extends DataModel {
     return Student(
       id: map['id'],
       name: map['name'],
+      address: map['address'],
+      photo: map['photo'],
       parentId: map['parentId'],
       level: map['level'],
+      status: map['status'],
     );
   }
 

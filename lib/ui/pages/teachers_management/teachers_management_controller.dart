@@ -3,6 +3,7 @@ import 'package:food_preservation/models/teacher.dart';
 import 'package:food_preservation/services/db/teacher_firestore_service.dart';
 import 'package:food_preservation/services/db/user_firestore_service.dart';
 import 'package:food_preservation/ui/pages/add_teacher/add_teacher_page.dart';
+import 'package:food_preservation/ui/pages/edit_teacher/edit_teacher_page.dart';
 import 'package:food_preservation/ui/theme/app_colors.dart';
 import 'package:food_preservation/ui/widgets/widgets.dart';
 import 'package:food_preservation/util/enums.dart';
@@ -48,8 +49,14 @@ class TeachersManagementController extends GetxController {
     if (ok) {
       await Get.find<UserFirestoreService>().updateUserStatus(
           teacher.info.id, status ? Status.approve : Status.notApprove);
-          showTextSuccess('تم التعديل بنجاح');
+      showTextSuccess('تم التعديل بنجاح');
       // update();
     }
+  }
+
+  editTeacher(Teacher teacher) async {
+    await Get.to(EditTeacherPage(
+      teacher: teacher,
+    ));
   }
 }

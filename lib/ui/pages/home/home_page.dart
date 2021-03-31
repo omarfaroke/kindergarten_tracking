@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_preservation/app/locator.dart';
 import 'package:food_preservation/services/app_service.dart';
 import 'package:food_preservation/services/authentication_service.dart';
+import 'package:food_preservation/ui/pages/parents_management/parents_management_page.dart';
+import 'package:food_preservation/ui/pages/students_management/students_management_page.dart';
 import 'package:food_preservation/ui/pages/tables_management/tables_management_page.dart';
 import 'package:food_preservation/ui/pages/teachers_management/teachers_management_page.dart';
 import 'package:food_preservation/ui/widgets/drawer_app.dart';
@@ -81,11 +83,11 @@ class HomePage extends StatelessWidget {
               ),
               CustomButton(
                 label: 'ادارة اولياء الامور',
-                onPressed: () {},
+                onPressed: () => Get.to(ParentsManagementPage()),
               ),
               CustomButton(
                 label: 'ادارة الطلاب',
-                onPressed: () {},
+                onPressed: () =>Get.to(StudentsManagementPage()),
               ),
               CustomButton(
                 label: 'ادارة الجداول',

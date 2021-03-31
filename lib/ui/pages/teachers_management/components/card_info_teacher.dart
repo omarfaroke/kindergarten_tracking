@@ -7,18 +7,18 @@ import 'package:food_preservation/util/enums.dart';
 import 'package:get/get.dart';
 
 class CardInfoTeacher extends StatelessWidget {
-  final Teacher teacher;
-  final Function(Teacher teatcher) onSelectedCustomer;
-  final Function(Teacher teatcher, bool value) onStatusChanged;
-  final Function(Teacher teatcher) onPressDelete;
-
   const CardInfoTeacher({
     Key key,
     @required this.teacher,
-    this.onSelectedCustomer,
     this.onStatusChanged,
     this.onPressDelete,
+    this.onPressEdit,
   }) : super(key: key);
+
+  final Teacher teacher;
+  final Function(Teacher teatcher, bool value) onStatusChanged;
+  final Function(Teacher teatcher) onPressDelete;
+  final Function(Teacher teatcher) onPressEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -100,13 +100,16 @@ class CardInfoTeacher extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () => onPressEdit(teacher)),
+                            IconButton(
                                 icon: Icon(Icons.delete),
                                 onPressed: () => onPressDelete(teacher)),
                             // Text("حالة المعلم"),
                             Switch(
                               // checkColor: AppColors.lightPrimary,
                               activeColor: AppColors.lightPrimary,
-                              value: infoTeacher.status != Status.notApprove,
+                              value: infoTeacher.status == Status.approve,
                               onChanged: (bool value) =>
                                   onStatusChanged(teacher, value),
                             ),

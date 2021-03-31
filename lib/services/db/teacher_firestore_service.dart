@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_preservation/models/teacher.dart';
+import 'package:food_preservation/models/teacher.dart';
 import 'package:food_preservation/models/user_model.dart';
 import 'package:food_preservation/util/enums.dart';
 import 'package:get/get.dart';
@@ -84,8 +85,14 @@ class TeacherFirestoreService extends GetxService {
       List<UserModel> users,
       List<TeacherLevel> listLevel,
     ) {
+      List<UserModel> listTeachers = List();
+      
+      if(users != null){
+        listTeachers = users.where((element) => element.type == UserType.Teacher.index).toList();
+      }
+
       print('rxdart.Rx.combineLatest2');
-      return users.map<Teacher>((user) {
+      return listTeachers.map<Teacher>((user) {
         String level = listLevel
             .firstWhere((element) => element.teacherId == user.id,
                 orElse: () => null)

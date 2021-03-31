@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:food_preservation/constants/constants.dart';
 import 'package:food_preservation/models/table.dart';
 import 'package:food_preservation/ui/theme/app_colors.dart';
-import 'package:food_preservation/ui/widgets/card_info_teacher.dart';
 import 'package:get/get.dart';
 import 'tables_management_controller.dart';
 import '../../../util/extensions.dart';

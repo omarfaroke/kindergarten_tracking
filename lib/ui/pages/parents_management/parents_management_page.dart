@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:food_preservation/ui/pages/parents_management/components/card_info_parent.dart';
 import 'package:food_preservation/ui/theme/app_colors.dart';
-import 'package:food_preservation/ui/pages/teachers_management/components/card_info_teacher.dart';
 import 'package:get/get.dart';
-import 'teachers_management_controller.dart';
+import 'parents_management_controller.dart';
 
-class TeachersManagementPage extends StatelessWidget {
-  const TeachersManagementPage({Key key}) : super(key: key);
+class ParentsManagementPage extends StatelessWidget {
+  const ParentsManagementPage({Key key, this.showSelected = false})
+      : super(key: key);
+
+  final bool showSelected;
 
   @override
   Widget build(BuildContext context) {
-    return MixinBuilder<TeachersManagementController>(
-        init: TeachersManagementController(),
+    return MixinBuilder<ParentsManagementController>(
+        init: ParentsManagementController(),
         builder: (controller) {
           return SafeArea(
             child: Directionality(
               textDirection: TextDirection.rtl,
               child: Scaffold(
                 appBar: AppBar(
-                  title: Text('ادارة المعلمين'),
+                  title:showSelected ?Text(' اولياء الامور') : Text('ادارة اولياء الامور'),
                   centerTitle: true,
                   actions: [
                     IconButton(
                         icon: Icon(Icons.person_add),
-                        onPressed: () => controller.addTeacher)
+                        onPressed: () => controller.add)
                   ],
                 ),
                 body: Container(
@@ -31,9 +34,9 @@ class TeachersManagementPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Divider(),
-                      (controller.listTeachers.value?.isEmpty ?? true)
+                      (controller.listParents.value?.isEmpty ?? true)
                           ? empty()
-                          : listTeachers(),
+                          : listParents(),
                     ],
                   ),
                 ),
@@ -43,20 +46,21 @@ class TeachersManagementPage extends StatelessWidget {
         });
   }
 
-  Widget listTeachers() {
-    final controller = Get.find<TeachersManagementController>();
-    final list = controller.listTeachers.value;
+  Widget listParents() {
+    final controller = Get.find<ParentsManagementController>();
+    final list = controller.listParents.value;
     return Expanded(
       child: ListView.builder(
           // shrinkWrap: true,
           itemCount: list.length,
           itemBuilder: (context, index) {
-            return CardInfoTeacher(
-              teacher: list[index],
-              onPressDelete: (teacher) => controller.deleteTeacher(teacher),
-              onPressEdit: (teacher) => controller.editTeacher(teacher),
-              onStatusChanged: (teacher, status) =>
-                  controller.changeStatus(teacher, status),
+            return CardInfoParent(
+              parent: list[index],
+              onPressDelete: (parent) => controller.delete(parent),
+              onPressEdit: (parent) => controller.edit(parent),
+              onStatusChanged: (parent, status) =>
+                  controller.changeStatus(parent, status),
+                  onPressSelected: showSelected ?  (parent) => controller.selected(parent) : null,
             );
           }),
     );
@@ -65,7 +69,7 @@ class TeachersManagementPage extends StatelessWidget {
   Widget empty() {
     return Center(
       child: Text(
-        'قائمة المعلمين فارغة ..',
+        'قائمة اولياء الامور فارغة ..',
         style: TextStyle(
             fontSize: 18,
             color: AppColors.lightPrimary,

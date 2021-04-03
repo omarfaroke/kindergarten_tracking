@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:food_preservation/app/locator.dart';
 import 'package:food_preservation/services/app_service.dart';
 import 'package:food_preservation/services/authentication_service.dart';
-import 'package:food_preservation/ui/pages/parents_management/parents_management_page.dart';
-import 'package:food_preservation/ui/pages/students_management/students_management_page.dart';
-import 'package:food_preservation/ui/pages/tables_management/tables_management_page.dart';
-import 'package:food_preservation/ui/pages/teachers_management/teachers_management_page.dart';
+import 'package:food_preservation/ui/pages/admin_pages/parents_management/parents_management_page.dart';
+import 'package:food_preservation/ui/pages/admin_pages/students_management/students_management_page.dart';
+import 'package:food_preservation/ui/pages/admin_pages/tables_management/tables_management_page.dart';
+import 'package:food_preservation/ui/pages/admin_pages/teachers_management/teachers_management_page.dart';
+import 'package:food_preservation/ui/pages/info_class_students/info_class_students_page.dart';
+import 'package:food_preservation/ui/pages/list_tables/list_table_page.dart';
 import 'package:food_preservation/ui/widgets/drawer_app.dart';
 import 'package:food_preservation/ui/widgets/widgets.dart';
 import 'package:food_preservation/util/enums.dart';
@@ -87,11 +89,11 @@ class HomePage extends StatelessWidget {
               ),
               CustomButton(
                 label: 'ادارة الطلاب',
-                onPressed: () =>Get.to(StudentsManagementPage()),
+                onPressed: () => Get.to(StudentsManagementPage()),
               ),
               CustomButton(
                 label: 'ادارة الجداول',
-                onPressed: () =>Get.to(TablesManagementPage()),
+                onPressed: () => Get.to(TablesManagementPage()),
               ),
             ],
           ),
@@ -101,21 +103,73 @@ class HomePage extends StatelessWidget {
   }
 
   Widget teacherHome() {
+    final controller = Get.find<HomeController>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(Get.find<AuthenticationService>().currentUser.email ?? 'null'),
+        Expanded(
+          child: GridView.count(
+            // childAspectRatio: (itemWidth / itemHeight),
+            crossAxisCount: 2,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
+            children: [
+              CustomButton(
+                label: 'بيانات الطلاب',
+                onPressed: () => Get.to(InfoClassStudentsPage()),
+              ),
+              CustomButton(
+                label: 'الواجبات',
+                onPressed: () => controller.openListDutiesForTeacher,
+              ),
+              CustomButton(
+                label: 'الرسائل',
+                onPressed: () {},
+              ),
+            ],
+          ),
+        )
       ],
     );
   }
 
   Widget parentHome() {
+    final controller = Get.find<HomeController>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(Get.find<AuthenticationService>().currentUser.email ?? 'null'),
+        Expanded(
+          child: GridView.count(
+            // childAspectRatio: (itemWidth / itemHeight),
+            crossAxisCount: 2,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
+            children: [
+              CustomButton(
+                label: 'جداول الحصص',
+                onPressed: () => controller.openListTabl,
+              ),
+              CustomButton(
+                label: 'الواجبات',
+                onPressed: () => controller.openListDuties,
+              ),
+              CustomButton(
+                label: 'السلوك',
+                onPressed: () => controller.openListBehavior,
+              ),
+              CustomButton(
+                label: 'متابعة خروج الطالب',
+                onPressed: () => controller.openListFollowExit,
+              ),
+              CustomButton(
+                label: ' الرسائل',
+                onPressed: () =>  controller.openListMsg,
+              ),
+            ],
+          ),
+        )
       ],
     );
   }

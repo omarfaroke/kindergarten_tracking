@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:food_preservation/app/locator.dart';
 import 'package:food_preservation/services/app_service.dart';
 import 'package:food_preservation/services/authentication_service.dart';
-import 'package:food_preservation/ui/pages/add_teacher/add_teacher_page.dart';
 import 'package:food_preservation/ui/theme/app_colors.dart';
 import 'package:food_preservation/util/enums.dart';
 import 'package:get/get.dart';
@@ -106,20 +105,6 @@ class AppDrawer extends StatelessWidget {
     return [
       uerInfo,
       home,
-      // Divider(),
-      // ListTile(
-      //   leading: Icon(
-      //     Icons.logout,
-      //     color: AppColors.lightPrimary,
-      //   ),
-      //   title: Text(
-      //     'إضافة معلم',
-      //     style: TextStyle(
-      //       color: AppColors.lightPrimary,
-      //     ),
-      //   ),
-      //   onTap: () => Get.to(AddTeacherPage()),
-      // ),
       Divider(),
       signOut,
     ];

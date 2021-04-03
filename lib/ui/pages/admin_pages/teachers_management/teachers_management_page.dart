@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_preservation/ui/theme/app_colors.dart';
-import 'package:food_preservation/ui/pages/teachers_management/components/card_info_teacher.dart';
+import 'package:food_preservation/ui/widgets/widgets.dart';
 import 'package:get/get.dart';
+import 'components/card_info_teacher.dart';
 import 'teachers_management_controller.dart';
 
 class TeachersManagementPage extends StatelessWidget {
@@ -30,10 +31,11 @@ class TeachersManagementPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Divider(),
-                      (controller.listTeachers.value?.isEmpty ?? true)
-                          ? empty()
-                          : listTeachers(),
+                      controller.loading
+                          ? Loading()
+                          : (controller.listTeachers.value?.isEmpty ?? true)
+                              ? empty()
+                              : listTeachers(),
                     ],
                   ),
                 ),

@@ -1,23 +1,20 @@
-import 'dart:io';
-
-import 'package:food_preservation/models/student.dart';
+import 'package:food_preservation/models/duties.dart';
 import 'package:food_preservation/services/db/students_firestore_service.dart';
 import 'package:food_preservation/ui/widgets/toast_msg.dart';
-import 'package:food_preservation/util/enums.dart';
 import 'package:get/get.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import '../../../util/extensions.dart';
 
-class AddStudentController extends GetxController {
+class AddDutiesController extends GetxController {
+  String _level;
+
+  AddDutiesController(String level) {
+    _level = level;
+    setUpDefualtValue;
+  }
+
   final _form = fb.group({
-    'name': FormControl(
-      validators: [
-        Validators.required,
-      ],
-    ),
-    'photo': FormControl(
-      validators: [],
-    ),
-    'address': FormControl(
+    'text': FormControl(
       validators: [
         Validators.required,
       ],
@@ -25,12 +22,15 @@ class AddStudentController extends GetxController {
     'level': FormControl<String>(
       validators: [
         Validators.required,
-        Validators.number,
       ],
     ),
   }, []);
 
   FormGroup get form => _form;
+
+  get setUpDefualtValue {
+    form.updateValue({'level': _level});
+  }
 
   bool _isBusy = false;
 
@@ -49,15 +49,12 @@ class AddStudentController extends GetxController {
 
         Map mapFrom = _form.value;
 
-        Student student = Student.fromMap(mapFrom);
+        Duties duties = Duties.fromMap(mapFrom);
 
-        File imageFile =
-            mapFrom['photo'] != null ? File(mapFrom['photo']) : null;
+        duties.date = DateTime.now().justDate.millisecondsSinceEpoch;
 
-        student.status = Status.approve;
-
-        bool ok = await Get.find<StudentsFirestoreService>()
-            .createStudent(student, imageFile: imageFile);
+        bool ok =
+            await Get.find<StudentsFirestoreService>().createDuties(duties);
 
         if (!ok) {
           throw new Exception();

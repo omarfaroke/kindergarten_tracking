@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_preservation/ui/pages/parents_management/components/card_info_parent.dart';
 import 'package:food_preservation/ui/theme/app_colors.dart';
+import 'package:food_preservation/ui/widgets/widgets.dart';
 import 'package:get/get.dart';
+import 'components/card_info_parent.dart';
 import 'parents_management_controller.dart';
 
 class ParentsManagementPage extends StatelessWidget {
@@ -20,7 +21,9 @@ class ParentsManagementPage extends StatelessWidget {
               textDirection: TextDirection.rtl,
               child: Scaffold(
                 appBar: AppBar(
-                  title:showSelected ?Text(' اولياء الامور') : Text('ادارة اولياء الامور'),
+                  title: showSelected
+                      ? Text(' اولياء الامور')
+                      : Text('ادارة اولياء الامور'),
                   centerTitle: true,
                   actions: [
                     IconButton(
@@ -33,10 +36,11 @@ class ParentsManagementPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Divider(),
-                      (controller.listParents.value?.isEmpty ?? true)
-                          ? empty()
-                          : listParents(),
+                      controller.loading
+                          ? Loading()
+                          : (controller.listParents.value?.isEmpty ?? true)
+                              ? empty()
+                              : listParents(),
                     ],
                   ),
                 ),
@@ -60,7 +64,8 @@ class ParentsManagementPage extends StatelessWidget {
               onPressEdit: (parent) => controller.edit(parent),
               onStatusChanged: (parent, status) =>
                   controller.changeStatus(parent, status),
-                  onPressSelected: showSelected ?  (parent) => controller.selected(parent) : null,
+              onPressSelected:
+                  showSelected ? (parent) => controller.selected(parent) : null,
             );
           }),
     );

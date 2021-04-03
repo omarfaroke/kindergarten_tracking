@@ -1,8 +1,8 @@
 import 'package:food_preservation/models/user_model.dart';
 import 'package:food_preservation/services/db/parent_firestore_service.dart';
 import 'package:food_preservation/services/db/user_firestore_service.dart';
-import 'package:food_preservation/ui/pages/add_parent/add_parent_page.dart';
-import 'package:food_preservation/ui/pages/edit_parent/edit_parent_page.dart';
+import 'package:food_preservation/ui/pages/admin_pages/add_parent/add_parent_page.dart';
+import 'package:food_preservation/ui/pages/admin_pages/edit_parent/edit_parent_page.dart';
 import 'package:food_preservation/ui/widgets/widgets.dart';
 import 'package:food_preservation/util/enums.dart';
 import 'package:get/get.dart';
@@ -16,10 +16,18 @@ class ParentsManagementController extends GetxController {
     Get.to(AddParentPage());
   }
 
+  var _loading = true.obs;
+
+  bool get loading => _loading.value;
+
   @override
   void onInit() {
     listParents.bindStream(Get.find<ParentFirestoreService>().parentsStream());
     super.onInit();
+    listParents.listen((listData) {
+      _loading.value = false;
+      // update();
+    });
   }
 
   delete(UserModel parent) async {
@@ -58,6 +66,6 @@ class ParentsManagementController extends GetxController {
   }
 
   selected(UserModel parent) {
-    Get.back(result:parent );
+    Get.back(result: parent);
   }
 }

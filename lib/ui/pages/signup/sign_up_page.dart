@@ -26,7 +26,7 @@ class SignUpPage extends StatelessWidget {
       builder: (controller) {
         controller.form.control('type').value = this.typeUser;
         if (this.typeUser == UserType.Parent.index) {
-          controller.form.control('level').value = 1;
+          controller.form.control('level').value = 1.toString();
         }
         return SafeArea(
             child: Scaffold(

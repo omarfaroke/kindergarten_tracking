@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'data_model.dart';
 
 class Student extends DataModel {
@@ -7,6 +6,8 @@ class Student extends DataModel {
   String name;
   String address;
   String photo;
+  String sex;
+  int birthDate;
   String parentId;
   String level;
   String status;
@@ -15,6 +16,8 @@ class Student extends DataModel {
     this.name,
     this.address,
     this.photo,
+    this.sex,
+    this.birthDate,
     this.parentId,
     this.level,
     this.status,
@@ -36,6 +39,8 @@ class Student extends DataModel {
       'name': name,
       'address': address,
       'photo': photo,
+      'sex': sex,
+      'birthDate': birthDate,
       'parentId': parentId,
       'level': level,
       'status': status,
@@ -48,6 +53,8 @@ class Student extends DataModel {
       name: map['name'],
       address: map['address'],
       photo: map['photo'],
+      sex: map['sex'],
+      birthDate: map['birthDate'],
       parentId: map['parentId'],
       level: map['level'],
       status: map['status'],

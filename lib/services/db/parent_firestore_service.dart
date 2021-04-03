@@ -68,12 +68,13 @@ class ParentFirestoreService extends GetxService {
     Stream<List<UserModel>> streamUserModel = Get.find<UserFirestoreService>()
         .usersStream(userType: UserType.Parent.index);
     return streamUserModel.map<List<UserModel>>((event) {
-      
-      if(event == null || event.isEmpty){
+      if (event == null || event.isEmpty) {
         return List<UserModel>();
       }
-      
-      return event.where((element) => element.type == UserType.Parent.index).toList() ;
+
+      return event
+          .where((element) => element.type == UserType.Parent.index)
+          .toList();
     });
   }
 }

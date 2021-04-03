@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_preservation/models/teacher.dart';
 import 'package:food_preservation/services/db/teacher_firestore_service.dart';
 import 'package:food_preservation/services/db/user_firestore_service.dart';
-import 'package:food_preservation/ui/pages/add_teacher/add_teacher_page.dart';
-import 'package:food_preservation/ui/pages/edit_teacher/edit_teacher_page.dart';
+import 'package:food_preservation/ui/pages/admin_pages/add_teacher/add_teacher_page.dart';
+import 'package:food_preservation/ui/pages/admin_pages/edit_teacher/edit_teacher_page.dart';
 import 'package:food_preservation/ui/theme/app_colors.dart';
 import 'package:food_preservation/ui/widgets/widgets.dart';
 import 'package:food_preservation/util/enums.dart';
@@ -18,11 +18,19 @@ class TeachersManagementController extends GetxController {
     Get.to(AddTeacherPage());
   }
 
+  var _loading = true.obs;
+
+ bool get loading => _loading.value;
+
   @override
   void onInit() {
     listTeachers
         .bindStream(Get.find<TeacherFirestoreService>().teachersStream());
     super.onInit();
+    listTeachers.listen((listData) {
+      _loading.value = false;
+      // update();
+    });
   }
 
   deleteTeacher(Teacher teacher) async {

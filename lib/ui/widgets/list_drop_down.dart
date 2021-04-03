@@ -4,13 +4,14 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 class ListDropdown extends StatelessWidget {
   const ListDropdown(
-      {Key key, this.formControlName, this.hint, this.values, this.prefixIcon, this.lable})
+      {Key key, this.formControlName, this.hint, this.values, this.prefixIcon, this.lable, this.readOnly =false})
       : super(key: key);
   final String formControlName;
   final String lable;
   final String hint;
   final values;
   final IconData prefixIcon;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class ListDropdown extends StatelessWidget {
 
     return ReactiveDropdownField(
       formControlName: this.formControlName,
+      readOnly:readOnly ,
       decoration: InputDecoration(
         // labelText:this.labelText,
         // border: UnderlineInputBorder(),

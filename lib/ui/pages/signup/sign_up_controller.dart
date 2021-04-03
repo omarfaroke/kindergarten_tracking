@@ -1,10 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:food_preservation/app/locator.dart';
 import 'package:food_preservation/models/user_model.dart';
+import 'package:food_preservation/services/app_service.dart';
 import 'package:food_preservation/services/authentication_service.dart';
 import 'package:food_preservation/services/db/teacher_firestore_service.dart';
+import 'package:food_preservation/ui/pages/home/home_page.dart';
 import 'package:food_preservation/ui/widgets/toast_msg.dart';
+import 'package:food_preservation/util/enums.dart';
 import 'package:food_preservation/util/function_helpers.dart';
 import 'package:get/get.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
@@ -64,7 +68,6 @@ class SignUpController extends GetxController {
     'level': FormControl<String>(
       validators: [
         Validators.required,
-        Validators.number,
       ],
     ),
   }, [
@@ -102,8 +105,13 @@ class SignUpController extends GetxController {
             user: user,
             imageFile: imageFile);
 
-        await Get.find<TeacherFirestoreService>()
-            .createTeacher(id: id, level: mapFrom['level']);
+        if (user.type == UserType.Teacher.index) {
+          await Get.find<TeacherFirestoreService>()
+              .createTeacher(id: id, level: mapFrom['level']);
+
+          locator<AppService>()
+              .setCustomDataToDb(key: 'level', data: mapFrom['level']);
+        }
       } catch (e) {
         if (e is EmailAlreadyInUseException) {
           showSnackBar(
@@ -134,7 +142,9 @@ class SignUpController extends GetxController {
   }
 
   get afterSuccessSignUp {
-    Get.back();
+    // Get.offUntil(HomePage(), (v) => false);
+
+    Get.offAll(HomePage());
   }
 
   Future<LocationResult> showMapView(BuildContext context) async {

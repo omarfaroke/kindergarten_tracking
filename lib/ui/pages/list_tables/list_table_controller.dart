@@ -4,40 +4,37 @@ import 'package:food_preservation/models/cache_files_model.dart';
 import 'package:food_preservation/models/table.dart';
 import 'package:food_preservation/services/cache_files_service.dart';
 import 'package:food_preservation/services/db/table_firestore_service.dart';
-import 'package:food_preservation/ui/pages/add_table/add_table_page.dart';
-import 'package:food_preservation/ui/widgets/widgets.dart';
+import 'package:food_preservation/ui/widgets/toast_msg.dart';
 import 'package:get/get.dart';
 import 'package:open_file/open_file.dart' as open_file;
 
-class TablesManagementController extends GetxController {
-  Rx<List<TableModel>> listTable = new Rx<List<TableModel>>();
+class ListTableController extends GetxController {
+  Rx<List<TableModel>> list = new Rx<List<TableModel>>();
 
-  List<TableModel> get tables => listTable.value;
+  List<String> _level;
 
-  get addTable {
-    Get.to(AddTablePage());
+  ListTableController(List<String> level) {
+    _level = level;
   }
+
+  List<TableModel> get listModel {
+    return list.value
+        .where((element) => _level.contains(element.level))
+        .toList();
+  }
+
+  var _loading = true.obs;
+  bool get loading => _loading.value;
 
   @override
   void onInit() async {
-    listTable.bindStream(Get.find<TableFirestoreService>().tablesStream());
-
+    list.bindStream(Get.find<TableFirestoreService>().tablesStream());
     await Get.find<CacheFilesService>().init();
-
     super.onInit();
-  }
-
-  onPressDelete(TableModel table) async {
-    bool ok = await defaultDialog(
-      title: 'حذف الجدول',
-      middleText: 'هل تريد حذف هذا الجدول ؟',
-    );
-
-    if (ok) {
-      await Get.find<TableFirestoreService>().deleteTable(table);
-      showTextSuccess('تم الحذف بنجاح');
+    list.listen((listData) {
+      _loading.value = false;
       // update();
-    }
+    });
   }
 
   onPressDownload(TableModel table) async {

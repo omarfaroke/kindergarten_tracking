@@ -3,12 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:food_preservation/app/locator.dart';
+import 'package:food_preservation/models/teacher.dart';
 import 'package:food_preservation/models/user_model.dart';
 import 'package:food_preservation/services/db/user_firestore_service.dart';
 import 'package:food_preservation/services/storge_services.dart';
+import 'package:food_preservation/util/enums.dart';
 import 'package:get/get.dart';
 
 import 'app_service.dart';
+import 'db/teacher_firestore_service.dart';
 
 class AuthenticationService extends GetxService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -40,6 +43,13 @@ class AuthenticationService extends GetxService {
       if (user == null) {
         await userCredential.user.delete();
         throw Exception('');
+      }
+
+      if (user.type == UserType.Teacher.index) {
+        String level =
+            await Get.find<TeacherFirestoreService>().getLevel(user.id);
+
+        locator<AppService>().setCustomDataToDb(key: 'level', data: level);
       }
 
       await locator<AppService>().refreshUserInfo(user);
@@ -82,7 +92,7 @@ class AuthenticationService extends GetxService {
         password: password,
       );
 
-      auth.currentUser.updateProfile(displayName: user.name);
+      // auth.currentUser.updateProfile(displayName: user.name);
 
       user.id = userCredential.user.uid;
 

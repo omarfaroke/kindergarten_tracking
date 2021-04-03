@@ -2,11 +2,11 @@ import 'package:food_preservation/models/student.dart';
 import 'package:food_preservation/models/user_model.dart';
 import 'package:food_preservation/services/db/students_firestore_service.dart';
 import 'package:food_preservation/services/db/user_firestore_service.dart';
-import 'package:food_preservation/ui/pages/add_student/add_student_page.dart';
-import 'package:food_preservation/ui/pages/edit_parent/edit_parent_page.dart';
-import 'package:food_preservation/ui/pages/edit_student/edit_student_page.dart';
-import 'package:food_preservation/ui/pages/parents_management/parents_management_page.dart';
-import 'package:food_preservation/ui/pages/students_management/students_management_page.dart';
+import 'package:food_preservation/ui/pages/admin_pages/add_student/add_student_page.dart';
+import 'package:food_preservation/ui/pages/admin_pages/edit_parent/edit_parent_page.dart';
+import 'package:food_preservation/ui/pages/admin_pages/edit_student/edit_student_page.dart';
+import 'package:food_preservation/ui/pages/admin_pages/parents_management/parents_management_page.dart';
+import 'package:food_preservation/ui/pages/admin_pages/students_management/students_management_page.dart';
 import 'package:food_preservation/ui/widgets/widgets.dart';
 import 'package:food_preservation/util/enums.dart';
 import 'package:get/get.dart';
@@ -32,10 +32,17 @@ class StudentsManagementController extends GetxController {
     Get.to(AddStudentPage());
   }
 
+  var _loading = true.obs;
+  bool get loading => _loading.value;
+
   @override
   void onInit() {
     list.bindStream(Get.find<StudentsFirestoreService>().studentsStream());
     super.onInit();
+    list.listen((listData) {
+      _loading.value = false;
+      // update();
+    });
   }
 
   delete(Student student) async {
@@ -110,7 +117,7 @@ class StudentsManagementController extends GetxController {
 
   showBrothers(Student student) async {
     print('showBrothers');
-        UserModel parent =
+    UserModel parent =
         await Get.find<UserFirestoreService>().getUser(student.parentId);
 
     if (parent == null) {
@@ -118,6 +125,10 @@ class StudentsManagementController extends GetxController {
       return;
     }
 
-    await Get.to(StudentsManagementPage(studentsForParent: parent,) , preventDuplicates: false);
+    await Get.to(
+        StudentsManagementPage(
+          studentsForParent: parent,
+        ),
+        preventDuplicates: false);
   }
 }

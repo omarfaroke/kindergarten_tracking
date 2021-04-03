@@ -50,6 +50,19 @@ class TeacherFirestoreService extends GetxService {
     }
   }
 
+  Future<String> getLevel(String id) async {
+    try {
+      DocumentSnapshot levelData =
+          await _teacherCollectionReference.doc(id).get();
+      String level = levelData.data()['level'];
+
+      return level;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   Future<bool> deleteTeacher(String uid) async {
     try {
       bool ok = await Get.find<UserFirestoreService>().deleteUser(uid);
@@ -86,9 +99,11 @@ class TeacherFirestoreService extends GetxService {
       List<TeacherLevel> listLevel,
     ) {
       List<UserModel> listTeachers = List();
-      
-      if(users != null){
-        listTeachers = users.where((element) => element.type == UserType.Teacher.index).toList();
+
+      if (users != null) {
+        listTeachers = users
+            .where((element) => element.type == UserType.Teacher.index)
+            .toList();
       }
 
       print('rxdart.Rx.combineLatest2');

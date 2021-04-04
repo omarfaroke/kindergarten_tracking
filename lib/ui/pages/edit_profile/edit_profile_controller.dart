@@ -129,7 +129,8 @@ class EditProfileController extends GetxController {
           imageFile = mapFrom['photo'] != null ? File(mapFrom['photo']) : null;
         }
 
-        user.type = UserType.Parent.index;
+        user.type = _user.type;
+        user.status = _user.status;
 
         if (imageFile != null) {
           user.photo = await StorageService.uploadFile(

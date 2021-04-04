@@ -95,8 +95,8 @@ class AppDrawer extends StatelessWidget {
             color: AppColors.lightPrimary,
           ),
         ),
-        onTap: ()async {
-         await Get.to(EditProfilePage(
+        onTap: () async {
+          await Get.to(EditProfilePage(
             user: locator<AppService>().currentUser,
             justShow: true,
           ));

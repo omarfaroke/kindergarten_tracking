@@ -82,6 +82,7 @@ class AddTeacherController extends GetxController {
             mapFrom['photo'] != null ? File(mapFrom['photo']) : null;
 
         user.type = UserType.Teacher.index;
+        user.status = Status.approve;
 
         String id = await Get.find<AuthenticationService>().signUpWithEmail(
           email: user.email,

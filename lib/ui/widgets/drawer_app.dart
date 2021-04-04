@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:food_preservation/app/locator.dart';
 import 'package:food_preservation/services/app_service.dart';
 import 'package:food_preservation/services/authentication_service.dart';
+import 'package:food_preservation/ui/pages/edit_profile/edit_profile_page.dart';
 import 'package:food_preservation/ui/theme/app_colors.dart';
 import 'package:food_preservation/util/enums.dart';
 import 'package:get/get.dart';
@@ -83,6 +84,26 @@ class AppDrawer extends StatelessWidget {
         onTap: () => print('home'),
       );
 
+  Widget get profile => ListTile(
+        leading: Icon(
+          Icons.person,
+          color: AppColors.lightPrimary,
+        ),
+        title: Text(
+          'البياناات الشخصية',
+          style: TextStyle(
+            color: AppColors.lightPrimary,
+          ),
+        ),
+        onTap: ()async {
+         await Get.to(EditProfilePage(
+            user: locator<AppService>().currentUser,
+            justShow: true,
+          ));
+          Get.back();
+        },
+      );
+
   Widget get signOut => ListTile(
         leading: Icon(
           Icons.logout,
@@ -105,6 +126,7 @@ class AppDrawer extends StatelessWidget {
     return [
       uerInfo,
       home,
+      profile,
       Divider(),
       signOut,
     ];
@@ -114,6 +136,7 @@ class AppDrawer extends StatelessWidget {
     return [
       uerInfo,
       home,
+      profile,
       Divider(),
       Divider(),
       signOut,
@@ -124,6 +147,7 @@ class AppDrawer extends StatelessWidget {
     return [
       uerInfo,
       home,
+      profile,
       Divider(),
       Divider(),
       signOut,

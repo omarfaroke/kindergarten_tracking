@@ -5,37 +5,37 @@ import 'package:food_preservation/ui/theme/app_colors.dart';
 import 'package:food_preservation/ui/widgets/widgets.dart';
 import 'package:get/get.dart';
 
-import 'components/card_info_student.dart';
-import 'list_students_controller.dart';
+import 'components/card_info_conversation.dart';
+import 'list_conversation_controller.dart';
 
-class ListStudentsPage extends StatelessWidget {
-  const ListStudentsPage({
+class ListConversationPage extends StatelessWidget {
+  const ListConversationPage({
     Key key,
-    @required this.parent,
-    this.titleAppBar, this.onSelected,
+    this.titleAppBar,
   }) : super(key: key);
 
-  final UserModel parent;
-  
   final String titleAppBar;
-  final Function(Student student) onSelected;
 
   @override
   Widget build(BuildContext context) {
-    return MixinBuilder<ListStudentController>(
-        init: ListStudentController(parent),
+    return MixinBuilder<ListConversationController>(
+        init: ListConversationController(),
         builder: (controller) {
           return SafeArea(
             child: Directionality(
               textDirection: TextDirection.rtl,
               child: Scaffold(
                 appBar: AppBar(
-                  title: titleAppBar != null
-                      ? Text(titleAppBar)
-                      : parent == null
-                          ? Text('بيانات الطلاب')
-                          : Text('حدد الطفل اولاً'),
+                  title:
+                      titleAppBar != null ? Text(titleAppBar) : Text('الرسائل'),
                   centerTitle: true,
+                  actions: [
+                    controller.isParent
+                        ? IconButton(
+                            icon: Icon(Icons.add_comment_sharp),
+                            onPressed: () => controller.add)
+                        : SizedBox()
+                  ],
                 ),
                 body: Container(
                   child: Column(
@@ -57,16 +57,17 @@ class ListStudentsPage extends StatelessWidget {
   }
 
   Widget listStudents() {
-    final controller = Get.find<ListStudentController>();
+    final controller = Get.find<ListConversationController>();
     final list = controller.listModel;
     return Expanded(
       child: ListView.builder(
           // shrinkWrap: true,
           itemCount: list.length,
           itemBuilder: (context, index) {
-            return CardInfoStudent(
-              student: list[index],
-              onSelected: (student) => onSelected ==null ?  controller.onSelected(student) : onSelected(student) // controller.onSelected(student),
+            return CardInfoConversation(
+              forParent: controller.isParent,
+              conversation: list[index],
+              onSelected: (conversation) => controller.onSelected(conversation),
             );
           }),
     );
@@ -75,9 +76,7 @@ class ListStudentsPage extends StatelessWidget {
   Widget empty() {
     return Center(
       child: Text(
-        parent != null
-            ? 'لا يوجد لديك أبناء مسجلين لدينا !'
-            : 'قائمة الطلاب فارغة !',
+        'قائمة الرسائل فارغة',
         style: TextStyle(
             fontSize: 18,
             color: AppColors.lightPrimary,

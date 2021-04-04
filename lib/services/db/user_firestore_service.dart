@@ -98,4 +98,21 @@ class UserFirestoreService extends GetxService {
       return null;
     }
   }
+
+  Future<List<UserModel>> usersFromListId({List<String> listId}) async {
+    try {
+      List<UserModel> retVal = List();
+      for (String id in listId) {
+        UserModel user = await getUser(id);
+        if (user != null) {
+          retVal.add(user);
+        }
+      }
+
+      return retVal;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }

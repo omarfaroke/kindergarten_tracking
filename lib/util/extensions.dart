@@ -6,7 +6,7 @@ extension ParseDateTimeToString on DateTime {
     final DateFormat format = DateFormat.yMd();
     return format.format(this);
   }
-  
+
   String formatTime() {
     final DateFormat format = DateFormat.Hm();
     return format.format(this);
@@ -25,13 +25,17 @@ extension ParseDateTimeToDate on DateTime {
 }
 
 extension ParseIntDateTimeToString on int {
-  String formatDate() {
+  String formatDate({bool withTime = false}) {
     final DateFormat format = DateFormat.yMd();
 
     if (this == null) return '';
 
     final DateTime date = DateTime.fromMillisecondsSinceEpoch(this);
-    return format.format(date);
+    String value = format.format(date);
+    if (withTime) {
+      value += ' ${date.hour}:${date.minute}:${date.second}';
+    }
+    return value;
   }
 
   DateTime get justDateFromMS {

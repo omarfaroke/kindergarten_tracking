@@ -125,7 +125,7 @@ class HomePage extends StatelessWidget {
               ),
               CustomButton(
                 label: 'الرسائل',
-                onPressed: () {},
+                onPressed: () =>  controller.openListMsg,
               ),
             ],
           ),

@@ -142,6 +142,22 @@ class AuthenticationService extends GetxService {
       return;
     }
   }
+
+  Future updatePassword(
+      {@required String oldPassword,
+      String newPassword,
+      String email}) async {
+    User user;
+
+    UserCredential userCredential = await _firebaseAuth
+        .signInWithEmailAndPassword(email: email, password: oldPassword);
+
+    user = userCredential.user;
+
+    await user.reload();
+
+    await user.updatePassword(newPassword);
+  }
 }
 
 class UserNotFoundException implements Exception {

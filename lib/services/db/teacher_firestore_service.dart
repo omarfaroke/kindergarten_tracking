@@ -50,6 +50,30 @@ class TeacherFirestoreService extends GetxService {
     }
   }
 
+  Future<String> getFirstTeacherByLevel(String level) async {
+    try {
+      QuerySnapshot listData = await _teacherCollectionReference
+          .where('level', isEqualTo: level)
+          .get();
+
+      List<TeacherLevel> retVal = List();
+      for (QueryDocumentSnapshot doc in listData.docs) {
+        Map mapData = doc.data();
+        mapData['teacherId'] = doc.id;
+        retVal.add(TeacherLevel.fromMap(mapData));
+      }
+
+      if (retVal.isEmpty) {
+        return null;
+      }
+
+      return retVal.first.teacherId;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   Future<String> getLevel(String id) async {
     try {
       DocumentSnapshot levelData =

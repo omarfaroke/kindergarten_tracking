@@ -8,6 +8,7 @@ import 'package:food_preservation/ui/pages/admin_pages/tables_management/tables_
 import 'package:food_preservation/ui/pages/admin_pages/teachers_management/teachers_management_page.dart';
 import 'package:food_preservation/ui/pages/info_class_students/info_class_students_page.dart';
 import 'package:food_preservation/ui/pages/list_tables/list_table_page.dart';
+import 'package:food_preservation/ui/theme/app_colors.dart';
 import 'package:food_preservation/ui/widgets/drawer_app.dart';
 import 'package:food_preservation/ui/widgets/widgets.dart';
 import 'package:food_preservation/util/enums.dart';
@@ -104,6 +105,14 @@ class HomePage extends StatelessWidget {
 
   Widget teacherHome() {
     final controller = Get.find<HomeController>();
+
+    bool notApprove = (controller.user.status == null) ||
+        (controller.user.status == Status.notApprove);
+
+    if (notApprove) {
+      return notApproveWidget();
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -125,7 +134,7 @@ class HomePage extends StatelessWidget {
               ),
               CustomButton(
                 label: 'الرسائل',
-                onPressed: () =>  controller.openListMsg,
+                onPressed: () => controller.openListMsg,
               ),
             ],
           ),
@@ -136,6 +145,14 @@ class HomePage extends StatelessWidget {
 
   Widget parentHome() {
     final controller = Get.find<HomeController>();
+
+    bool notApprove = (controller.user.status == null) ||
+        (controller.user.status == Status.notApprove);
+
+    if (notApprove) {
+      return notApproveWidget();
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -165,11 +182,46 @@ class HomePage extends StatelessWidget {
               ),
               CustomButton(
                 label: ' الرسائل',
-                onPressed: () =>  controller.openListMsg,
+                onPressed: () => controller.openListMsg,
               ),
             ],
           ),
         )
+      ],
+    );
+  }
+
+  Widget notApproveWidget() {
+        final controller = Get.find<HomeController>();
+        
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: Container(
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Text(
+                'حسابك غير مفعل ! \n الرجاء التواصل مع ادارة التطبيق لتفعيل حسابك ',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 18,
+                    color: AppColors.lightPrimary,
+                    fontFamily: "DinNextLtW23",
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ),
+        FlatButton(
+          onPressed: () => controller.signOut(),
+          child: Text(
+            'تسجيل خروح',
+            style: TextStyle(color: Colors.white),
+          ),
+          color: AppColors.lightPrimary,
+        ),
       ],
     );
   }

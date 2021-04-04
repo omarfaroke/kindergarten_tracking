@@ -64,7 +64,8 @@ class AuthenticationService extends GetxService {
         throw WrongPasswordException();
       }
     } catch (e) {
-      return e.message;
+      rethrow;
+      // return e.message;
     }
   }
 
@@ -123,13 +124,24 @@ class AuthenticationService extends GetxService {
         throw EmailAlreadyInUseException();
       }
     } catch (e) {
-      print(e);
+      rethrow;
+      // print(e);
     }
   }
 
   // Reset Password
   Future sendPasswordResetEmail({@required String email}) async {
-    return await _firebaseAuth.sendPasswordResetEmail(email: email);
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        throw UserNotFoundException();
+      } else {
+        rethrow;
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   // sign out
@@ -144,19 +156,30 @@ class AuthenticationService extends GetxService {
   }
 
   Future updatePassword(
-      {@required String oldPassword,
-      String newPassword,
-      String email}) async {
-    User user;
+      {@required String oldPassword, String newPassword, String email}) async {
+    try {
+      User user;
 
-    UserCredential userCredential = await _firebaseAuth
-        .signInWithEmailAndPassword(email: email, password: oldPassword);
+      UserCredential userCredential = await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: oldPassword);
 
-    user = userCredential.user;
+      // AuthCredential credential =
+      //     EmailAuthProvider.credential(email: email, password: newPassword);
 
-    await user.reload();
-
-    await user.updatePassword(newPassword);
+      user = userCredential.user;
+      // await user.reauthenticateWithCredential(credential);
+      user.reload();
+      await user.updatePassword(newPassword);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        throw UserNotFoundException();
+      } else if (e.code == 'wrong-password') {
+        throw WrongPasswordException();
+      }
+    } catch (e) {
+      rethrow;
+      // return e.message;
+    }
   }
 }
 

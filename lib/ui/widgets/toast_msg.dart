@@ -9,8 +9,8 @@ import 'package:get/get.dart';
 
 import 'download_alert.dart';
 
-showTextSuccess(String msg) {
-  BotToast.showText(text: msg);
+showTextSuccess(String msg, {Duration duration})  {
+  BotToast.showText(text: msg, duration: duration ?? Duration(seconds: 2));
 }
 
 showTextError(String errorMsg) {

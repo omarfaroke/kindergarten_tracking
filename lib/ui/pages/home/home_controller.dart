@@ -22,6 +22,8 @@ class HomeController extends GetxController {
 
   UserType get userType => locator<AppService>().userType;
 
+  UserModel get user => locator<AppService>().currentUser;
+
   Future<List<String>> get getLevelAllChildren async {
     UserModel parent = locator<AppService>().currentUser;
 
@@ -114,6 +116,9 @@ class HomeController extends GetxController {
 
   get openListMsg async {
     await Get.to(ListConversationPage());
+  }
 
+  signOut() {
+    Get.find<AuthenticationService>().signOut();
   }
 }

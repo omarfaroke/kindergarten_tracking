@@ -112,7 +112,7 @@ class EditProfileController extends GetxController {
         UserModel user = UserModel.fromMap(mapFrom);
 
         if (_form.control('editPass').value) {
-          Get.find<AuthenticationService>().updatePassword(
+          await Get.find<AuthenticationService>().updatePassword(
             oldPassword: mapFrom['oldPassword'],
             newPassword: mapFrom['password'],
             email: user.email,
@@ -138,6 +138,14 @@ class EditProfileController extends GetxController {
         }
 
         await Get.find<UserFirestoreService>().updateUserInfo(user);
+      } on WrongPasswordException catch (e) {
+        showSnackBar(
+          title: "كلمة المرور غير صحيحة",
+          message: '',
+        );
+
+        isBusy = false;
+        return;
       } catch (e) {
         showSnackBar(
           title: "خطأ في التعديل",

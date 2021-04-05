@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:food_preservation/app/locator.dart';
-import 'package:food_preservation/services/app_service.dart';
-import 'package:food_preservation/services/authentication_service.dart';
+import 'package:food_preservation/ui/pages/admin_pages/ads_management/ads_management_page.dart';
 import 'package:food_preservation/ui/pages/admin_pages/parents_management/parents_management_page.dart';
 import 'package:food_preservation/ui/pages/admin_pages/students_management/students_management_page.dart';
 import 'package:food_preservation/ui/pages/admin_pages/tables_management/tables_management_page.dart';
 import 'package:food_preservation/ui/pages/admin_pages/teachers_management/teachers_management_page.dart';
 import 'package:food_preservation/ui/pages/info_class_students/info_class_students_page.dart';
-import 'package:food_preservation/ui/pages/list_tables/list_table_page.dart';
 import 'package:food_preservation/ui/theme/app_colors.dart';
 import 'package:food_preservation/ui/widgets/drawer_app.dart';
 import 'package:food_preservation/ui/widgets/widgets.dart';
 import 'package:food_preservation/util/enums.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/components/button/gf_button.dart';
+
 import 'home_controller.dart';
 
 class HomePage extends StatelessWidget {
@@ -96,6 +93,10 @@ class HomePage extends StatelessWidget {
                 label: 'ادارة الجداول',
                 onPressed: () => Get.to(TablesManagementPage()),
               ),
+              CustomButton(
+                label: 'ادارة الاعلانات',
+                onPressed: () => Get.to(AdsManagementPage()),
+              ),
             ],
           ),
         )
@@ -135,6 +136,10 @@ class HomePage extends StatelessWidget {
               CustomButton(
                 label: 'الرسائل',
                 onPressed: () => controller.openListMsg,
+              ),
+              CustomButton(
+                label: ' الاعلانات',
+                onPressed: () => controller.openListAds,
               ),
             ],
           ),
@@ -184,6 +189,10 @@ class HomePage extends StatelessWidget {
                 label: ' الرسائل',
                 onPressed: () => controller.openListMsg,
               ),
+              CustomButton(
+                label: ' الاعلانات',
+                onPressed: () => controller.openListAds,
+              ),
             ],
           ),
         )
@@ -192,8 +201,8 @@ class HomePage extends StatelessWidget {
   }
 
   Widget notApproveWidget() {
-        final controller = Get.find<HomeController>();
-        
+    final controller = Get.find<HomeController>();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,

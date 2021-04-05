@@ -5,6 +5,7 @@ import 'package:food_preservation/services/app_service.dart';
 import 'package:food_preservation/services/authentication_service.dart';
 import 'package:food_preservation/services/db/parent_firestore_service.dart';
 import 'package:food_preservation/services/db/user_firestore_service.dart';
+import 'package:food_preservation/ui/pages/list_ads/list_ads_page.dart';
 import 'package:food_preservation/ui/pages/list_behavior/list_behavior_page.dart';
 import 'package:food_preservation/ui/pages/list_conversation/list_conversation_page.dart';
 import 'package:food_preservation/ui/pages/list_duties/list_duties_page.dart';
@@ -116,6 +117,10 @@ class HomeController extends GetxController {
 
   get openListMsg async {
     await Get.to(ListConversationPage());
+  }
+
+  get openListAds async {
+    await Get.to(ListAdsPage());
   }
 
   signOut() {

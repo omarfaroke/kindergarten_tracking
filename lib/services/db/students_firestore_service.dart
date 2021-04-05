@@ -20,14 +20,15 @@ class StudentsFirestoreService extends GetxService {
   Future<bool> createStudent(Student student, {File imageFile}) async {
     DocumentReference doc = await _studentsCollectionReference.add({});
     student.id = doc.id;
-    await _studentsCollectionReference
-        .doc(student.id)
-        .set(student.toMap()..addAll(updatedAtField));
 
     if (imageFile != null) {
       student.photo = await StorageService.uploadFile(
           'studentsImages/${student.id}', imageFile);
     }
+
+    await _studentsCollectionReference
+        .doc(student.id)
+        .set(student.toMap()..addAll(updatedAtField));
 
     return true;
   }
@@ -194,7 +195,6 @@ class StudentsFirestoreService extends GetxService {
   }
 
   Stream<List<Duties>> dutiesStream(List<String> level) {
-
     return _firebase
         .collection('Duties')
         // .where('level', whereIn: level)

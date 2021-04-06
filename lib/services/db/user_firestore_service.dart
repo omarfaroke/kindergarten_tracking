@@ -49,7 +49,7 @@ class UserFirestoreService extends GetxService {
       return null;
     } catch (e) {
       print(e);
-      return null;
+      rethrow;
     }
   }
 

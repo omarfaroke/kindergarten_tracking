@@ -24,6 +24,7 @@ class CustomButton extends StatelessWidget {
           width: 120,
           child: Text(
             label ?? '',
+            textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 18,
                 color: AppColors.lightTextButton,
